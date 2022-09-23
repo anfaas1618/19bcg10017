@@ -34,7 +34,7 @@ async function fetchUrls(validatedUrl) {
                 .then(json => {
                    // console.log(json.numbers)
                     for (let i = 0; i < json.numbers.length; i++) {
-                        array.push(json.numbers[i])
+                        array.push(parseInt(json.numbers[i]))
                     }
                 });
         }catch (err){
@@ -45,7 +45,7 @@ async function fetchUrls(validatedUrl) {
     uniqueArray = array.filter(function(item, pos) {
         return array.indexOf(item) == pos;
     })
-    console.log(uniqueArray)
+   // console.log(uniqueArray)
     return uniqueArray
 }
 const solution = async (req, res) => {
@@ -53,9 +53,13 @@ const solution = async (req, res) => {
     let urls = queryURL.url;
     //console.log(urls);
     let validatedUrl = validateUrl(urls)
-    console.log(validatedUrl)
+    //console.log(validatedUrl)
    let ans =  await fetchUrls(validatedUrl)
-    res.status(200).json(ans)
+    ans.sort(function(a, b){return a-b});
+    console.log(ans)
+    res.status(200).json({
+        numbers:ans
+    })
 }
 
 
