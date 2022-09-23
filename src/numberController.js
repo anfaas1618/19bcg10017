@@ -20,22 +20,15 @@ function validateUrl(urls) {
                return url;
            }
     });
-    console.log(result)
-    return urls;
+    return result;
 }
 
 const solution = (req,res)=>
 { const queryURL = url.parse(req.url, true).query;
     let urls = queryURL.url;
     //console.log(urls);
-
-
-
    let validatedUrl  =  validateUrl(urls)
-
-
-
-    res.status(200).json(req.query.url)
+    res.status(200).json(validatedUrl)
 }
 
 
