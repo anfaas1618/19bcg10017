@@ -26,23 +26,36 @@ function validateUrl(urls) {
 }
 
 async function fetchUrls(validatedUrl) {
-    let array=[]
+    var array=[]
     for (const url1 of validatedUrl) {
-        fetch(url1)
-            .then(res => res.json())
-            .then(json => {
-                console.log(json.numbers);;
-            })
+        try {
+          await  fetch(url1)
+                .then(res => res.json())
+                .then(json => {
+                   // console.log(json.numbers)
+                    for (let i = 0; i < json.numbers.length; i++) {
+                        array.push(json.numbers[i])
+                    }
+                });
+        }catch (err){
+
+        }
+
     }
+    uniqueArray = array.filter(function(item, pos) {
+        return array.indexOf(item) == pos;
+    })
+    console.log(uniqueArray)
+    return uniqueArray
 }
-const solution = (req,res)=>
-{ const queryURL = url.parse(req.url, true).query;
+const solution = async (req, res) => {
+    const queryURL = url.parse(req.url, true).query;
     let urls = queryURL.url;
     //console.log(urls);
-   let validatedUrl  =  validateUrl(urls)
+    let validatedUrl = validateUrl(urls)
     console.log(validatedUrl)
-        fetchUrls(validatedUrl)
-    res.status(200).json(validatedUrl)
+   let ans =  await fetchUrls(validatedUrl)
+    res.status(200).json(ans)
 }
 
 
